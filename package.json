@@ -2,6 +2,7 @@
   "name": "forkify",
   "version": "1.0.0",
   "description": "recipe web application",
+
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html"
@@ -17,7 +18,6 @@
   },
   "homepage": "https://github.com/Omared250/forkify-final-project#readme",
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.5.0",
     "parcel": "^2.5.0"
   }
 }
