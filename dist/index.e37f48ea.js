@@ -533,8 +533,32 @@ const timeout = function(s) {
             reject(new Error(`Request took too long! Timeout after ${s} second`));
         }, s * 1000);
     });
-}; // https://forkify-api.herokuapp.com/v2
- ///////////////////////////////////////
+};
+// https://forkify-api.herokuapp.com/v2
+///////////////////////////////////////
+const showRecipe = async function() {
+    try {
+        // const res = await fetch('https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886');
+        const res = await fetch('https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc8fd');
+        const data = await res.json();
+        if (!res.ok) throw new Error(`${data.message} $`);
+        let { recipe  } = data.data;
+        recipe = {
+            id: recipe.id,
+            title: recipe.title,
+            pusblisher: recipe.pusblisher,
+            sourceUrl: recipe.source_url,
+            image: recipe.image_url,
+            servings: recipe.servings,
+            cookinTime: recipe.cooking_time,
+            ingredients: recipe.ingredients
+        };
+        console.log(recipe);
+    } catch (err) {
+        alert(err);
+    }
+};
+showRecipe();
 
 },{}]},["9GjUt","aenu9"], "aenu9", "parcelRequire3a11")
 
