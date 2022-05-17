@@ -4,7 +4,8 @@
   "description": "recipe web application",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Omared250/forkify-final-project/issues"
   },
-  "homepage": "https://github.com/Omared250/forkify-final-project#readme"
+  "homepage": "https://github.com/Omared250/forkify-final-project#readme",
+  "devDependencies": {
+    "parcel": "^2.5.0"
+  }
 }
