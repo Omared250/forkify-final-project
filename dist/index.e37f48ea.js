@@ -529,9 +529,6 @@ function hmrAcceptRun(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _moduleJs = require("./module.js");
-// import icons from '../img/icons.svg'; // Parce 1
-var _iconsSvg = require("url:../img/icons.svg"); // Parce 2
-var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 var _runtime = require("regenerator-runtime/runtime");
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
@@ -545,21 +542,11 @@ const timeout = function(s) {
 };
 // https://forkify-api.herokuapp.com/v2
 ///////////////////////////////////////
-const renderSpinner = function(parentEl) {
-    const markup = `
-  <div class="spinner">
-    <svg>
-      <use href="${_iconsSvgDefault.default}#icon-loader"></use>
-    </svg>
-  </div>`;
-    parentEl.innerHTML = '';
-    parentEl.insertAdjacentHTML('afterbegin', markup);
-};
 const controlRecipes = async function() {
     try {
         const id = window.location.hash.slice(1);
         if (!id) return;
-        renderSpinner(recipeContainer);
+        _recipeViewJsDefault.default.renderSpinner();
         // 1). Loading recipe
         await _moduleJs.loadRecipe(id);
         //2). Rendering Recepi
@@ -575,7 +562,7 @@ const controlRecipes = async function() {
 ].forEach((ev)=>window.addEventListener(ev, controlRecipes)
 );
 
-},{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./module.js":"Qr6Q3","./views/recipeView.js":"l60JC","url:../img/icons.svg":"loVOp"}],"49tUX":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./module.js":"Qr6Q3","./views/recipeView.js":"l60JC"}],"49tUX":[function(require,module,exports) {
 // TODO: Remove this module from `core-js@4` since it's split to modules listed below
 require('../modules/web.clear-immediate');
 require('../modules/web.set-immediate');
@@ -2293,19 +2280,32 @@ const loadRecipe = async function(id) {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"l60JC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+// import icons from '../img/icons.svg'; // Parce 1
+var _iconsSvg = require("url:../../img/icons.svg"); // Parce 2
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class RecipeView {
     #parentElement = document.querySelector('.recipe');
     #data;
     render(data) {
         this.#data = data;
         console.log(data);
-        const markup = this.#generateMarkup;
-        this.#clear;
+        const markup = this.#generateMarkup();
+        this.#clear();
         this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     }
      #clear() {
         this.#parentElement.innerHTML = '';
     }
+    renderSpinner = function() {
+        const markup = `
+        <div class="spinner">
+          <svg>
+            <use href="${_iconsSvgDefault.default}#icon-loader"></use>
+          </svg>
+        </div>`;
+        this.#parentElement.innerHTML = '';
+        this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    };
      #generateMarkup() {
         return `
         <figure class="recipe__fig">
@@ -2317,14 +2317,14 @@ class RecipeView {
         <div class="recipe__details">
           <div class="recipe__info">
             <svg class="recipe__info-icon">
-              <use href="${icons}#icon-clock"></use>
+              <use href="${_iconsSvgDefault.default}#icon-clock"></use>
             </svg>
             <span class="recipe__info-data recipe__info-data--minutes">${this.#data.cookinTime}</span>
             <span class="recipe__info-text">minutes</span>
           </div>
           <div class="recipe__info">
             <svg class="recipe__info-icon">
-              <use href="${icons}#icon-users"></use>
+              <use href="${_iconsSvgDefault.default}#icon-users"></use>
             </svg>
             <span class="recipe__info-data recipe__info-data--people">${this.#data.servings}</span>
             <span class="recipe__info-text">servings</span>
@@ -2332,12 +2332,12 @@ class RecipeView {
             <div class="recipe__info-buttons">
               <button class="btn--tiny btn--increase-servings">
                 <svg>
-                  <use href="${icons}#icon-minus-circle"></use>
+                  <use href="${_iconsSvgDefault.default}#icon-minus-circle"></use>
                 </svg>
               </button>
               <button class="btn--tiny btn--increase-servings">
                 <svg>
-                  <use href="${icons}#icon-plus-circle"></use>
+                  <use href="${_iconsSvgDefault.default}#icon-plus-circle"></use>
                 </svg>
               </button>
             </div>
@@ -2345,12 +2345,12 @@ class RecipeView {
         
           <div class="recipe__user-generated">
             <svg>
-              <use href="${icons}#icon-user"></use>
+              <use href="${_iconsSvgDefault.default}#icon-user"></use>
             </svg>
           </div>
           <button class="btn--round">
             <svg class="">
-              <use href="${icons}#icon-bookmark-fill"></use>
+              <use href="${_iconsSvgDefault.default}#icon-bookmark-fill"></use>
             </svg>
           </button>
         </div>
@@ -2362,7 +2362,7 @@ class RecipeView {
             return `
               <li class="recipe__ingredient">
                 <svg class="recipe__icon">
-                  <use href="${icons}#icon-check"></use>
+                  <use href="${_iconsSvgDefault.default}#icon-check"></use>
                 </svg>
                 <div class="recipe__quantity">${ing.quantity}</div>
                 <div class="recipe__description">
@@ -2388,7 +2388,7 @@ class RecipeView {
           >
             <span>Directions</span>
               <svg class="search__icon">
-                <use href="${icons}#icon-arrow-right"></use>
+                <use href="${_iconsSvgDefault.default}#icon-arrow-right"></use>
               </svg>
           </a>
         </div>`;
@@ -2396,7 +2396,7 @@ class RecipeView {
 }
 exports.default = new RecipeView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"loVOp":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/icons.svg":"loVOp"}],"loVOp":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('hWUTQ') + "icons.dfd7a6db.svg" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
