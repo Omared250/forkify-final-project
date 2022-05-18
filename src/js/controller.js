@@ -27,5 +27,7 @@ const controlRecipes = async function() {
   }
 };
 
-// Adding events to the page to see if the hash changed or the page load
-['hashchange', 'load'].forEach(ev => window.addEventListener(ev, controlRecipes));
+const init = function() {
+  recipeView.addHandlerRender(controlRecipes);
+}
+init();
