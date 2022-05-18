@@ -1,5 +1,5 @@
 export const state = {
-    recepi : {},
+    recipe : {},
 };
 
 export const loadRecipe = async function(id) {
@@ -21,7 +21,7 @@ export const loadRecipe = async function(id) {
           cookinTime : recipe.cooking_time,
           ingredients : recipe.ingredients
         }
-        console.log(state.recepi);
+        console.log(state.recipe);
     } catch (err) {
         alert(err);
     }
