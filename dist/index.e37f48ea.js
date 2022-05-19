@@ -529,11 +529,11 @@ function hmrAcceptRun(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _modelJs = require("./model.js");
-var _runtime = require("regenerator-runtime/runtime");
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
-// https://forkify-api.herokuapp.com/v2
-///////////////////////////////////////
+var _searchViewJs = require("./searchView.js");
+var _searchViewJsDefault = parcelHelpers.interopDefault(_searchViewJs);
+var _runtime = require("regenerator-runtime/runtime");
 const controlRecipes = async function() {
     try {
         const id = window.location.hash.slice(1);
@@ -547,21 +547,23 @@ const controlRecipes = async function() {
         _recipeViewJsDefault.default.renderError();
     }
 };
-const controlSearch = async function() {
+const controlSearchResults = async function() {
     try {
-        await _modelJs.loadSearchResults();
+        const query = _searchViewJsDefault.default.getQuery();
+        if (!query) return;
+        await _modelJs.loadSearchResults(query);
         console.log(_modelJs.state.search.results);
     } catch (err) {
         console.error(err);
     }
 };
-controlSearch();
 const init = function() {
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
+    _searchViewJsDefault.default.addHandlerSearch(controlSearchResults);
 };
 init();
 
-},{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/recipeView.js":"l60JC","./model.js":"Y4A21"}],"49tUX":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/recipeView.js":"l60JC","./model.js":"Y4A21","./searchView.js":"9M3GU"}],"49tUX":[function(require,module,exports) {
 // TODO: Remove this module from `core-js@4` since it's split to modules listed below
 require('../modules/web.clear-immediate');
 require('../modules/web.set-immediate');
@@ -2729,7 +2731,7 @@ const loadRecipe = async function(id) {
 const loadSearchResults = async function(query) {
     try {
         state.search.query = query;
-        const data = await _helpersJs.getJSON(`${_cofigJs.API_URL}?search=pizza`);
+        const data = await _helpersJs.getJSON(`${_cofigJs.API_URL}?search=${query}`);
         state.search.results = data.data.recipes.map((rec)=>{
             return {
                 id: rec.id,
@@ -2780,6 +2782,23 @@ const getJSON = async function(url) {
     }
 };
 
-},{"./cofig.js":"8jqNB","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["9GjUt","aenu9"], "aenu9", "parcelRequire3a11")
+},{"./cofig.js":"8jqNB","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9M3GU":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class SearchView {
+    #parentElement = document.querySelector('.search');
+    getQuery() {
+        return this.#parentElement.querySelector('.search__field').value;
+    }
+    addHandlerSearch(handler) {
+        this.#parentElement.addEventListener('submit', function(e) {
+            e.preventDefault();
+            handler();
+        });
+    }
+}
+exports.default = new SearchView();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["9GjUt","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map
