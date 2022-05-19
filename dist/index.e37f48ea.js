@@ -548,6 +548,15 @@ const controlRecipes = async function() {
         _recipeViewJsDefault.default.renderError();
     }
 };
+const controlSearch = async function() {
+    try {
+        await _modelJs.loadSearchResults();
+        console.log(_modelJs.state.search.results);
+    } catch (err) {
+        console.error(err);
+    }
+};
+controlSearch();
 const init = function() {
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
 };
@@ -2730,7 +2739,6 @@ const loadSearchResults = async function(query) {
                 image: rec.image_url
             };
         });
-        console.log(state.search.results);
     } catch (err) {
         throw err;
     }
