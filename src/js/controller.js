@@ -4,8 +4,6 @@ import 'regenerator-runtime/runtime';
 import recipeView from './views/recipeView.js';
 import { async } from 'regenerator-runtime/runtime';
 
-const recipeContainer = document.querySelector('.recipe');
-
 // https://forkify-api.herokuapp.com/v2
 
 ///////////////////////////////////////

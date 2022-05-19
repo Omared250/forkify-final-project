@@ -532,7 +532,6 @@ var _modelJs = require("./model.js");
 var _runtime = require("regenerator-runtime/runtime");
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
-const recipeContainer = document.querySelector('.recipe');
 // https://forkify-api.herokuapp.com/v2
 ///////////////////////////////////////
 const controlRecipes = async function() {
