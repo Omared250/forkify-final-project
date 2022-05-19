@@ -545,7 +545,7 @@ const controlRecipes = async function() {
         //2). Rendering Recepi
         _recipeViewJsDefault.default.render(_moduleJs.state.recipe);
     } catch (err) {
-        alert(err);
+        _recipeViewJsDefault.default.renderError();
     }
 };
 const init = function() {
@@ -2263,8 +2263,7 @@ const loadRecipe = async function(id) {
             ingredients: recipe.ingredients
         };
     } catch (err) {
-        // Temp error handling
-        console.error(`${err} 🔥🔥🔥🔥🔥`);
+        throw err;
     }
 };
 
@@ -2315,6 +2314,7 @@ var _fractional = require("fractional");
 class RecipeView {
     #parentElement = document.querySelector('.recipe');
     #data;
+    #errorMessage = 'We could not find that recipe. Please try another one!';
     render(data) {
         this.#data = data;
         const markup = this.#generateMarkup();
@@ -2334,7 +2334,7 @@ class RecipeView {
         this.#clear();
         this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     }
-    renderError(message) {
+    renderError(message = this.#errorMessage) {
         const markup = `
       <div class="error">
         <div>
