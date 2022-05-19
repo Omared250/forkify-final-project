@@ -559,7 +559,6 @@ const controlSearchResults = async function() {
         // 2. Load search results
         await _modelJs.loadSearchResults(query);
         // 3. Render results
-        console.log(_modelJs.state.search.results);
         _resultsViewJsDefault.default.render(_modelJs.state.search.results);
     } catch (err) {
         console.error(err);
@@ -2403,9 +2402,6 @@ class RecipeView extends _viewJsDefault.default {
           </div>
         
           <div class="recipe__user-generated">
-            <svg>
-              <use href="${_iconsSvgDefault.default}#icon-user"></use>
-            </svg>
           </div>
           <button class="btn--round">
             <svg class="">
@@ -2754,6 +2750,7 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
     _data;
     render(data) {
+        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
         this._data = data;
         const markup = this._generateMarkup();
         this._clear();
@@ -2764,11 +2761,11 @@ class View {
     }
     renderSpinner() {
         const markup = `
-        <div class="spinner">
-          <svg>
-            <use href="${_iconsSvgDefault.default}#icon-loader"></use>
-          </svg>
-        </div>`;
+      <div class="spinner">
+        <svg>
+          <use href="${_iconsSvgDefault.default}#icon-loader"></use>
+        </svg>
+      </div>`;
         this._clear();
         this._parentElement.insertAdjacentHTML('afterbegin', markup);
     }
@@ -2832,8 +2829,9 @@ var _iconsSvg = require("url:../../img/icons.svg"); // Parce 2
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class ResultsView extends _viewJsDefault.default {
     _parentElement = document.querySelector('.results');
+    _errorMessage = 'No recipes found for your query! Please try again!';
+    _message = '';
     _generateMarkup() {
-        console.log(this._data);
         return this._data.map(this._generateMarkupPreview).join('');
     }
     _generateMarkupPreview(result) {
