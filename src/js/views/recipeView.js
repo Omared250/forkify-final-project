@@ -46,14 +46,14 @@ class RecipeView {
 
     renderMessage(message = this.#message) {
       const markup = `
-      <div class="error">
+      <div class="message">
         <div>
           <svg>
             <use href="${icons}#icon-smile"></use>
           </svg>
         </div>
         <p>${message}!</p>
-      </div>`
+      </div>`;
       this.#clear();
       this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     };

@@ -2350,7 +2350,7 @@ class RecipeView {
     }
     renderMessage(message = this.#message) {
         const markup = `
-      <div class="error">
+      <div class="message">
         <div>
           <svg>
             <use href="${_iconsSvgDefault.default}#icon-smile"></use>
