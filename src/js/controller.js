@@ -1,4 +1,4 @@
-import * as model from './module.js';
+import * as model from './model.js';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import recipeView from './views/recipeView.js';
