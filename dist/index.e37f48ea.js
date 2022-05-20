@@ -563,15 +563,18 @@ const controlSearchResults = async function() {
         // 2. Load search results
         await _modelJs.loadSearchResults(query);
         // 3. Render results
-        _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage(6));
+        _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage());
         // 4. Render initial pagination buttons
         _paginationViewJsDefault.default.render(_modelJs.state.search);
     } catch (err) {
         console.error(err);
     }
 };
-const controlPagination = function() {
-    console.log('Pag controller');
+const controlPagination = function(goToPage) {
+    // 3. Render results
+    _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage(goToPage));
+    // 4. Render New pagination buttons
+    _paginationViewJsDefault.default.render(_modelJs.state.search);
 };
 const init = function() {
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
@@ -2885,10 +2888,10 @@ class PaginationView extends _viewJsDefault.default {
     _parentElement = document.querySelector('.pagination');
     addHandlerClick(handler) {
         this._parentElement.addEventListener('click', function(e) {
-            e.preventDefault();
             const btn = e.target.closest('.btn--inline');
-            console.log(btn);
-            handler();
+            if (!btn) return;
+            const goToPage = +btn.dataset.goto;
+            handler(goToPage);
         });
     }
     _generateMarkup() {
@@ -2908,7 +2911,7 @@ class PaginationView extends _viewJsDefault.default {
     }
     _generateMarkupButtonPrev(curPage) {
         return `
-        <button class="btn--inline pagination__btn--prev">
+        <button data-goto="${curPage - 1}" class="btn--inline pagination__btn--prev">
             <svg class="search__icon">
               <use href="${_iconsSvgDefault.default}#icon-arrow-left"></use>
             </svg>
@@ -2917,7 +2920,7 @@ class PaginationView extends _viewJsDefault.default {
     }
     _generateMarkupButtonNext(curPage) {
         return `
-        <button class="btn--inline pagination__btn--next">
+        <button data-goto="${curPage + 1}" class="btn--inline pagination__btn--next">
             <span>Page ${curPage + 1}</span>
             <svg class="search__icon">
               <use href="${_iconsSvgDefault.default}#icon-arrow-right"></use>
