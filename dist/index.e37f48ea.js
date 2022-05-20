@@ -559,7 +559,7 @@ const controlSearchResults = async function() {
         // 2. Load search results
         await _modelJs.loadSearchResults(query);
         // 3. Render results
-        _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage(1));
+        _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage());
     } catch (err) {
         console.error(err);
     }
@@ -2726,6 +2726,7 @@ const state = {
     search: {
         query: '',
         results: [],
+        page: 1,
         resultsPerPage: _cofigJs.RES_PER_PAGE
     }
 };
@@ -2763,7 +2764,8 @@ const loadSearchResults = async function(query) {
         throw err;
     }
 };
-const getSearchResultsPage = function(page) {
+const getSearchResultsPage = function(page = state.search.page) {
+    state.search.page = page;
     const start = (page - 1) * state.search.resultsPerPage; // 0
     const end = page * state.search.resultsPerPage; // 9
     return state.search.results.slice(start, end);
