@@ -9,6 +9,7 @@ class PaginationView extends View {
             e.preventDefault();
             const btn = e.target.closest('.btn--inline');
             console.log(btn);
+            handler();
         })
     }
 
