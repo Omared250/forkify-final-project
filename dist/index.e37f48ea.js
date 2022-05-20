@@ -2879,6 +2879,13 @@ var _iconsSvg = require("url:../../img/icons.svg"); // Parce 2
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class PaginationView extends _viewJsDefault.default {
     _parentElement = document.querySelector('.pagination');
+    addHandlerClick(handler) {
+        this._parentElement.addEventListener('click', function(e) {
+            e.preventDefault();
+            const btn = e.target.closest('.btn--inline');
+            console.log(btn);
+        });
+    }
     _generateMarkup() {
         const curPage = this._data.page;
         const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);

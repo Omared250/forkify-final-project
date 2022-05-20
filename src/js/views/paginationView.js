@@ -4,10 +4,18 @@ import icons from 'url:../../img/icons.svg'; // Parce 2
 class PaginationView extends View {
     _parentElement = document.querySelector('.pagination');
 
+    addHandlerClick(handler) {
+        this._parentElement.addEventListener('click', function(e) {
+            e.preventDefault();
+            const btn = e.target.closest('.btn--inline');
+            console.log(btn);
+        })
+    }
+
     _generateMarkup() {
         const curPage = this._data.page;
-
-        const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);
+        const numPages = Math.ceil(this._data.results.length / 
+        this._data.resultsPerPage);
 
         // Page 1, and there are other pages
         if(curPage === 1 && numPages > 1) {
