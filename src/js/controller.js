@@ -42,6 +42,7 @@ const controlSearchResults = async function() {
     await model.loadSearchResults(query);
 
     // 3. Render results
+    model.state.search.page = 1;
     resultsView.render(model.getSearchResultsPage());
 
     // 4. Render initial pagination buttons
@@ -57,6 +58,12 @@ const controlPagination = function(goToPage) {
 
   // 4. Render New pagination buttons
   paginationView.render(model.state.search);
+}
+
+const controlServings = function() {
+  // Update the recepi servings (in state)
+
+  // Update the view
 }
 
 const init = function() {

@@ -563,6 +563,7 @@ const controlSearchResults = async function() {
         // 2. Load search results
         await _modelJs.loadSearchResults(query);
         // 3. Render results
+        _modelJs.state.search.page = 1;
         _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage());
         // 4. Render initial pagination buttons
         _paginationViewJsDefault.default.render(_modelJs.state.search);
@@ -575,6 +576,10 @@ const controlPagination = function(goToPage) {
     _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage(goToPage));
     // 4. Render New pagination buttons
     _paginationViewJsDefault.default.render(_modelJs.state.search);
+};
+const controlServings = function() {
+// Update the recepi servings (in state)
+// Update the view
 };
 const init = function() {
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
