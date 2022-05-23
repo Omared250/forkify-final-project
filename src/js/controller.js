@@ -25,6 +25,9 @@ const controlRecipes = async function() {
     //2). Rendering Recepi
     recipeView.render(model.state.recipe);
 
+    // TEST
+    controlServings();
+
   } catch (err) {
     recipeView.renderError(); 
   }
@@ -61,8 +64,10 @@ const controlPagination = function(goToPage) {
 
 const controlServings = function() {
   // Update the recepi servings (in state)
+  model.updateServings(8)
 
   // Update the view
+  recipeView.render(model.state.recipe);
 }
 
 const init = function() {

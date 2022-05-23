@@ -550,6 +550,8 @@ const controlRecipes = async function() {
         await _modelJs.loadRecipe(id);
         //2). Rendering Recepi
         _recipeViewJsDefault.default.render(_modelJs.state.recipe);
+        // TEST
+        controlServings();
     } catch (err) {
         _recipeViewJsDefault.default.renderError();
     }
@@ -577,8 +579,10 @@ const controlPagination = function(goToPage) {
     _paginationViewJsDefault.default.render(_modelJs.state.search);
 };
 const controlServings = function() {
-// Update the recepi servings (in state)
-// Update the view
+    // Update the recepi servings (in state)
+    _modelJs.updateServings(8);
+    // Update the view
+    _recipeViewJsDefault.default.render(_modelJs.state.recipe);
 };
 const init = function() {
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
@@ -2735,6 +2739,8 @@ parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults
 );
 parcelHelpers.export(exports, "getSearchResultsPage", ()=>getSearchResultsPage
 );
+parcelHelpers.export(exports, "updateServings", ()=>updateServings
+);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _cofigJs = require("./cofig.js");
 var _helpersJs = require("./helpers.js");
@@ -2743,7 +2749,7 @@ const state = {
     search: {
         query: '',
         results: [],
-        page: 1,
+        page: 0,
         resultsPerPage: _cofigJs.RES_PER_PAGE
     }
 };
@@ -2786,6 +2792,14 @@ const getSearchResultsPage = function(page = state.search.page) {
     const start = (page - 1) * state.search.resultsPerPage; // 0
     const end = page * state.search.resultsPerPage; // 9
     return state.search.results.slice(start, end);
+};
+const updateServings = function(newServings) {
+    state.recipe.ingredients.forEach((ing)=>{
+        // newQt = oldQt * newServings / oldServings
+        ing.quantity = ing.quantity * newServings / state.recipe.servings;
+    });
+    // Update the servings in the state
+    state.recipe.servings = newServings;
 };
 
 },{"regenerator-runtime":"dXNgZ","./cofig.js":"8jqNB","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8jqNB":[function(require,module,exports) {
