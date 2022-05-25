@@ -2767,6 +2767,8 @@ parcelHelpers.export(exports, "getSearchResultsPage", ()=>getSearchResultsPage
 );
 parcelHelpers.export(exports, "updateServings", ()=>updateServings
 );
+parcelHelpers.export(exports, "addBookmark", ()=>addBookmark
+);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _cofigJs = require("./cofig.js");
 var _helpersJs = require("./helpers.js");
@@ -2777,7 +2779,8 @@ const state = {
         results: [],
         page: 0,
         resultsPerPage: _cofigJs.RES_PER_PAGE
-    }
+    },
+    bookmarks: []
 };
 const loadRecipe = async function(id) {
     try {
@@ -2827,6 +2830,12 @@ const updateServings = function(newServings) {
     });
     // Update the servings in the state
     state.recipe.servings = newServings;
+};
+const addBookmark = function(recipe) {
+    // Add bookmark
+    state.bookmarks.push(recipe);
+    // Mark current recipe as bookmark
+    if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
 };
 
 },{"regenerator-runtime":"dXNgZ","./cofig.js":"8jqNB","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8jqNB":[function(require,module,exports) {
