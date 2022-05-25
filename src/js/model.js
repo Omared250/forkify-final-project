@@ -29,6 +29,12 @@ export const loadRecipe = async function(id) {
           servings : recipe.servings,
           cookinTime : recipe.cooking_time,
           ingredients : recipe.ingredients
+        };
+
+        if (state.bookmarks.some(bookmark => bookmark.id === id)) {
+            state.recipe.bookmarked = true;
+        } else {
+            state.recipe.bookmark = false;
         }
         
     } catch (err) {
