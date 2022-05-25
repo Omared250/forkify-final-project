@@ -565,7 +565,7 @@ const controlSearchResults = async function() {
         // 2. Load search results
         await _modelJs.loadSearchResults(query);
         // 3. Render results
-        _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage(1));
+        _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage());
         // 4. Render initial pagination buttons
         _paginationViewJsDefault.default.render(_modelJs.state.search);
     } catch (err) {
@@ -2809,6 +2809,7 @@ const loadSearchResults = async function(query) {
                 image: rec.image_url
             };
         });
+        state.search.page = 1;
     } catch (err) {
         throw err;
     }
