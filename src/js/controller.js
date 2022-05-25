@@ -60,7 +60,7 @@ const controlPagination = function(goToPage) {
 
   // 4. Render New pagination buttons
   paginationView.render(model.state.search);
-}
+};
 
 const controlServings = function(newServings) {
   // Update the recepi servings (in state)
@@ -69,6 +69,11 @@ const controlServings = function(newServings) {
   // Update the view
   // recipeView.render(model.state.recipe);
   recipeView.update(model.state.recipe);
+};
+
+const controlAddBookmark = function() {
+  model.addBookmark(model.state.recipe);
+  console.log(model.state.recipe);
 }
 
 const init = function() {
