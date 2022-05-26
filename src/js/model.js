@@ -83,7 +83,7 @@ export const updateServings = function(newServings) {
 
 const persistBookmarks = function() {
     localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
-}
+};
 
 export const addBookmark = function(recipe) {
     // Add bookmark
@@ -107,3 +107,15 @@ export const deleteBookmark = function(id) {
 
     persistBookmarks();
 };
+
+const init = function() {
+    const storage = localStorage.getItem('bookmarks');
+    if(storage) state.bookmarks = JSON.parse(storage);
+};
+init();
+
+// Function to develop 
+const clearBookmarks = function() {
+    localStorage.clear('bookmarks')
+};
+// clearBookmarks();
