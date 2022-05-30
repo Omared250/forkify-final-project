@@ -2,7 +2,7 @@ import View from './view.js';
 
 // import icons from '../img/icons.svg'; // Parce 1
 import icons from 'url:../../img/icons.svg'; // Parce 2
-import fracty from "fracty";
+import fracty from 'fracty';
 
 class RecipeView extends View {
     _parentElement = document.querySelector('.recipe');
@@ -43,7 +43,7 @@ class RecipeView extends View {
             <svg class="recipe__info-icon">
               <use href="${icons}#icon-clock"></use>
             </svg>
-            <span class="recipe__info-data recipe__info-data--minutes">${this._data.cookingTime}</span>
+            <span class="recipe__info-data recipe__info-data--minutes">${this._data.cookinTime}</span>
             <span class="recipe__info-text">minutes</span>
           </div>
           <div class="recipe__info">
@@ -67,7 +67,7 @@ class RecipeView extends View {
             </div>
           </div>
         
-          <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
+          <div class="recipe__user-generated ${this._data.key ? '' : 'hi'}">
             <svg>
               <use href="${icons}#icon-user"></use>
             </svg>
