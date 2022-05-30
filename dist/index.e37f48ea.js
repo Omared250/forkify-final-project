@@ -609,7 +609,6 @@ const controlAddRecipe = async function(newRecipe) {
         _addRecipeViewJsDefault.default.renderSpinner();
         // Upload the new recipe data
         await _modelJs.uploadRecipe(newRecipe);
-        console.log(_modelJs.state.recipe);
         // Render recipe
         _recipeViewJsDefault.default.render(_modelJs.state.recipe);
         // Succes message
@@ -2370,7 +2369,7 @@ class RecipeView extends _viewJsDefault.default {
             <svg class="recipe__info-icon">
               <use href="${_iconsSvgDefault.default}#icon-clock"></use>
             </svg>
-            <span class="recipe__info-data recipe__info-data--minutes">${this._data.cookinTime}</span>
+            <span class="recipe__info-data recipe__info-data--minutes">${this._data.cookingTime}</span>
             <span class="recipe__info-text">minutes</span>
           </div>
           <div class="recipe__info">
@@ -2394,7 +2393,10 @@ class RecipeView extends _viewJsDefault.default {
             </div>
           </div>
         
-          <div class="recipe__user-generated">
+          <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
+            <svg>
+              <use href="${_iconsSvgDefault.default}#icon-user"></use>
+            </svg>
           </div>
           <button class="btn--round btn--bookmark">
             <svg class="">
@@ -2742,7 +2744,15 @@ var _iconsSvg = require("url:../../img/icons.svg"); // Parce 2
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
     _data;
-    render(data, render = true) {
+    /**
+     * Render the received object to the DOM
+     * @param {Object | Object[]} data The data to be render (e.g. recipe)
+     * @param {boolean} [render = true] If false, create markup string instead of rendering to the DOM
+     * @returns {undefined | string} A markup string is returned if render = false
+     * @this {Object} View instance
+     * @author Omar Ascanio
+     * @todo Finish implementation
+     */ render(data, render = true) {
         if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
         this._data = data;
         const markup = this._generateMarkup();
@@ -2858,7 +2868,7 @@ const createRecipeObject = function(data) {
 };
 const loadRecipe = async function(id) {
     try {
-        const data = await _helpersJs.AJAX(`${_cofigJs.API_URL}/${id}`);
+        const data = await _helpersJs.AJAX(`${_cofigJs.API_URL}/${id}?key=${_cofigJs.KEY}`);
         state.recipe = createRecipeObject(data);
         if (state.bookmarks.some((bookmark)=>bookmark.id === id
         )) state.recipe.bookmarked = true;
@@ -2870,13 +2880,16 @@ const loadRecipe = async function(id) {
 const loadSearchResults = async function(query) {
     try {
         state.search.query = query;
-        const data = await _helpersJs.AJAX(`${_cofigJs.API_URL}?search=${query}`);
+        const data = await _helpersJs.AJAX(`${_cofigJs.API_URL}?search=${query}&key=${_cofigJs.KEY}`);
         state.search.results = data.data.recipes.map((rec)=>{
             return {
                 id: rec.id,
                 title: rec.title,
                 publisher: rec.publisher,
-                image: rec.image_url
+                image: rec.image_url,
+                ...rec.key && {
+                    key: rec.key
+                }
             };
         });
         state.search.page = 1;
@@ -2930,7 +2943,8 @@ const uploadRecipe = async function(newRecipe) {
     try {
         const ingredients = Object.entries(newRecipe).filter((entry)=>entry[0].startsWith('ingredient') && entry[1] !== ''
         ).map((ing)=>{
-            const ingArr = ing[1].replaceAll(' ', '').split(',');
+            const ingArr = ing[1].split(',').map((el)=>el.trim()
+            );
             if (ingArr.length !== 3) throw new Error('Wrong ingredient format! Please use the correct format :)');
             const [quantity, unit, description] = ingArr;
             return {
@@ -2948,7 +2962,6 @@ const uploadRecipe = async function(newRecipe) {
             servings: +newRecipe.servings,
             ingredients
         };
-        console.log(recipe);
         const data = await _helpersJs.AJAX(`${_cofigJs.API_URL}?key=${_cofigJs.KEY}`, recipe);
         state.recipe = createRecipeObject(data);
         addBookmark(state.recipe);
@@ -3073,6 +3086,11 @@ class PreviewView extends _viewJsDefault.default {
                 <div class="preview__data">
                     <h4 class="preview__title">${this._data.title}</h4>
                     <p class="preview__publisher">${this._data.publisher}</p>
+                    <div class="preview__user-generated ${this._data.key ? '' : 'hidden'}">
+                        <svg>
+                            <use href="${_iconsSvgDefault.default}#icon-user"></use>
+                        </svg>
+                    </div>
                 </div>
             </a>
         </li>`;
