@@ -1,7 +1,6 @@
 import { async } from "regenerator-runtime";
-import { API_URL } from "./cofig.js";
-import { getJSON } from "./helpers.js";
-import { RES_PER_PAGE } from "./cofig.js";
+import { API_URL, RES_PER_PAGE, KEY } from "./cofig.js";
+import { getJSON, sendJSON } from "./helpers.js";
 
 export const state = {
     recipe : {},
@@ -133,7 +132,7 @@ export const uploadRecipe = async function(newRecipe) {
 
             return { quantity : quantity ? +quantity : null, unit, description}
         });
-        
+
         const recipe = {
             title : newRecipe.title,
             source_url : newRecipe.sourceUrl,
@@ -142,8 +141,11 @@ export const uploadRecipe = async function(newRecipe) {
             cooking_time : +newRecipe.cookingTime,
             servings : +newRecipe.servings,
             ingredients,
-        }
+        };
         console.log(recipe);
+
+        const data = await sendJSON(`${API_URL}?key=${KEY}`, recipe);
+        console.log(data);
     } catch (err) {
         throw err;
     }

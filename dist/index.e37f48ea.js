@@ -2926,6 +2926,8 @@ const uploadRecipe = async function(newRecipe) {
             ingredients
         };
         console.log(recipe);
+        const data = await _helpersJs.sendJSON(`${_cofigJs.API_URL}?key=${_cofigJs.KEY}`, recipe);
+        console.log(data);
     } catch (err) {
         throw err;
     }
@@ -2940,14 +2942,19 @@ parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC
 );
 parcelHelpers.export(exports, "RES_PER_PAGE", ()=>RES_PER_PAGE
 );
-const API_URL = 'https://forkify-api.herokuapp.com/api/v2/recipes/';
+parcelHelpers.export(exports, "KEY", ()=>KEY
+);
+const API_URL = 'https://forkify-api.herokuapp.com/api/v2/recipes';
 const TIMEOUT_SEC = 10;
 const RES_PER_PAGE = 10;
+const KEY = '227749b9-086e-41d2-a051-58218a8d5f23';
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hGI1E":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getJSON", ()=>getJSON
+);
+parcelHelpers.export(exports, "sendJSON", ()=>sendJSON
 );
 var _cofigJs = require("./cofig.js");
 const timeout = function(s) {
@@ -2959,8 +2966,29 @@ const timeout = function(s) {
 };
 const getJSON = async function(url) {
     try {
+        const fetchPro = fetch(url);
         const res = await Promise.race([
-            fetch(url),
+            fetchPro,
+            timeout(_cofigJs.TIMEOUT_SEC)
+        ]);
+        const data = await res.json();
+        if (!res.ok) throw new Error(`${data.message} $`);
+        return data;
+    } catch (err) {
+        throw err;
+    }
+};
+const sendJSON = async function(url, uploadData) {
+    try {
+        const fetchPro = fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(uploadData)
+        });
+        const res = await Promise.race([
+            fetchPro,
             timeout(_cofigJs.TIMEOUT_SEC)
         ]);
         const data = await res.json();
