@@ -1,6 +1,6 @@
 import { async } from "regenerator-runtime";
 import { API_URL, RES_PER_PAGE, KEY } from "./cofig.js";
-import { getJSON, sendJSON } from "./helpers.js";
+import { AJAX } from "./helpers.js";
 
 export const state = {
     recipe : {},
@@ -31,7 +31,7 @@ const createRecipeObject = function(data) {
 
 export const loadRecipe = async function(id) {
     try {
-        const data = await getJSON(`${API_URL}/${id}`);
+        const data = await AJAX(`${API_URL}/${id}`);
 
         state.recipe = createRecipeObject(data);
     
@@ -50,7 +50,7 @@ export const loadSearchResults = async function(query) {
     try {
         state.search.query = query;
 
-        const data = await getJSON(`${API_URL}?search=${query}`);
+        const data = await AJAX(`${API_URL}?search=${query}`);
 
         state.search.results = data.data.recipes.map(rec => {
             return {
@@ -149,7 +149,7 @@ export const uploadRecipe = async function(newRecipe) {
         };
         console.log(recipe);
 
-        const data = await sendJSON(`${API_URL}?key=${KEY}`, recipe);
+        const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
         state.recipe = createRecipeObject(data);
         addBookmark(state.recipe);
     } catch (err) {

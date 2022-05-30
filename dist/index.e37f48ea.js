@@ -618,6 +618,7 @@ const controlAddRecipe = async function(newRecipe) {
         _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
         // Change ID im URL
         window.history.pushState(null, '', `#${_modelJs.state.recipe.id}`);
+        // window.history.back()
         // Close form window
         setTimeout(function() {
             _addRecipeViewJsDefault.default.toggleWindow();
@@ -2857,7 +2858,7 @@ const createRecipeObject = function(data) {
 };
 const loadRecipe = async function(id) {
     try {
-        const data = await _helpersJs.getJSON(`${_cofigJs.API_URL}/${id}`);
+        const data = await _helpersJs.AJAX(`${_cofigJs.API_URL}/${id}`);
         state.recipe = createRecipeObject(data);
         if (state.bookmarks.some((bookmark)=>bookmark.id === id
         )) state.recipe.bookmarked = true;
@@ -2869,7 +2870,7 @@ const loadRecipe = async function(id) {
 const loadSearchResults = async function(query) {
     try {
         state.search.query = query;
-        const data = await _helpersJs.getJSON(`${_cofigJs.API_URL}?search=${query}`);
+        const data = await _helpersJs.AJAX(`${_cofigJs.API_URL}?search=${query}`);
         state.search.results = data.data.recipes.map((rec)=>{
             return {
                 id: rec.id,
@@ -2948,7 +2949,7 @@ const uploadRecipe = async function(newRecipe) {
             ingredients
         };
         console.log(recipe);
-        const data = await _helpersJs.sendJSON(`${_cofigJs.API_URL}?key=${_cofigJs.KEY}`, recipe);
+        const data = await _helpersJs.AJAX(`${_cofigJs.API_URL}?key=${_cofigJs.KEY}`, recipe);
         state.recipe = createRecipeObject(data);
         addBookmark(state.recipe);
     } catch (err) {
@@ -2978,10 +2979,9 @@ const MODAL_CLOSE_SEC = 2.5;
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hGI1E":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getJSON", ()=>getJSON
+parcelHelpers.export(exports, "AJAX", ()=>AJAX
 );
-parcelHelpers.export(exports, "sendJSON", ()=>sendJSON
-);
+var _regeneratorRuntime = require("regenerator-runtime");
 var _cofigJs = require("./cofig.js");
 const timeout = function(s) {
     return new Promise(function(_, reject) {
@@ -2990,29 +2990,15 @@ const timeout = function(s) {
         }, s * 1000);
     });
 };
-const getJSON = async function(url) {
+const AJAX = async function(url, uploadData) {
     try {
-        const fetchPro = fetch(url);
-        const res = await Promise.race([
-            fetchPro,
-            timeout(_cofigJs.TIMEOUT_SEC)
-        ]);
-        const data = await res.json();
-        if (!res.ok) throw new Error(`${data.message} $`);
-        return data;
-    } catch (err) {
-        throw err;
-    }
-};
-const sendJSON = async function(url, uploadData) {
-    try {
-        const fetchPro = fetch(url, {
+        const fetchPro = uploadData ? fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(uploadData)
-        });
+        }) : fetch(url);
         const res = await Promise.race([
             fetchPro,
             timeout(_cofigJs.TIMEOUT_SEC)
@@ -3025,7 +3011,7 @@ const sendJSON = async function(url, uploadData) {
     }
 };
 
-},{"./cofig.js":"8jqNB","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9OQAM":[function(require,module,exports) {
+},{"./cofig.js":"8jqNB","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","regenerator-runtime":"dXNgZ"}],"9OQAM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class SearchView {
