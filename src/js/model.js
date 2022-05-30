@@ -27,7 +27,7 @@ export const loadRecipe = async function(id) {
           sourceUrl : recipe.source_url,
           image : recipe.image_url,
           servings : recipe.servings,
-          cookinTime : recipe.cooking_time,
+          cookingTime : recipe.cooking_time,
           ingredients : recipe.ingredients
         };
 
@@ -133,7 +133,17 @@ export const uploadRecipe = async function(newRecipe) {
 
             return { quantity : quantity ? +quantity : null, unit, description}
         });
-        console.log(ingredients);
+        
+        const recipe = {
+            title : newRecipe.title,
+            source_url : newRecipe.sourceUrl,
+            image_url : newRecipe.image,
+            publisher : newRecipe.publisher,
+            cooking_time : +newRecipe.cookingTime,
+            servings : +newRecipe.servings,
+            ingredients,
+        }
+        console.log(recipe);
     } catch (err) {
         throw err;
     }
